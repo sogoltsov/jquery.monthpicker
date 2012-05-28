@@ -14,10 +14,12 @@ In your web page:
 <script src="jquery.js"></script>
 <script src="dist/jquery.monthpicker.min.js"></script>
 <script>
-jQuery(function($) {
-  $.monthpicker(); // "monthpicker"
+$(function() {
+    $("#monthpicker").monthpicker();
 });
 </script>
+
+<div id="monthpicker"></div>
 ```
 
 ## Documentation
