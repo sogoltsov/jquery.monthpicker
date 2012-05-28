@@ -50,7 +50,8 @@
             stepYears: 1, // Number of years to step back/forward
             changeMonth: false, // True if month can be selected directly, false if only prev/next
             changeYear: true, // True if year can be selected directly, false if only prev/next
-            duration: 'fast', // Duration of display/closure
+            showOptions: {}, // Options for enhanced animations
+            duration: 1, // Duration of display/closure
             minYearMonth: null, // The earliest selectable year&month, or null for no limit
             maxYearMonth: null, // The latest selectable year&month, or null for no limit
             onSelect: null // Define a callback function when month/year are selected
@@ -419,7 +420,8 @@
             inst.baseYear = inst.drawYear = inst.selectedYear;
             this._selectMonth(inst, inst.selectedMonth);
             this._selectYear(inst, inst.selectedYear);
-            inst.msMPDiv.show(true, $.monthpicker._get(inst, 'showOptions'), duration, postProcess);
+//            inst.msMPDiv.show(true, $.monthpicker._get(inst, 'showOptions'), duration, postProcess); //use jQuery().show() instead this
+            inst.msMPDiv.show(duration, $.monthpicker._get(inst, 'showOptions'), postProcess);
             console.log('_showMonthYearPicker() done');
         },
 //    _updateMonthpicker:function (inst) {
