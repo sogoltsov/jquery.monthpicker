@@ -16,7 +16,7 @@
     $.extend($.ui, { monthpicker: { version: "@VERSION" } });
 
     var PROP_NAME = 'monthpicker';
-    var dpuuid = new Date().getTime();
+    var mpuuid = new Date().getTime();
     var instActive;
 
     function Monthpicker() {
@@ -108,7 +108,7 @@
                 }
             }
             var nodeName = target.nodeName.toLowerCase();
-            var inline = (nodeName == 'div' || nodeName == 'span');
+            var inline = (nodeName === 'div' || nodeName === 'span');
             console.log('inline: ' + inline);
             if (!target.id) {
                 this.uuid += 1;
@@ -116,7 +116,7 @@
             }
             var inst = this._newInst($(target), inline);
             inst.settings = $.extend({}, settings || {}, inlineSettings || {});
-            if (nodeName == 'input') {
+            if (nodeName === 'input') {
                 this._connectMonthpicker(target, inst);
             } else if (inline) {
                 this._inlineMonthpicker(target, inst);
@@ -149,8 +149,9 @@
         _inlineMonthpicker: function(target, inst) {
             console.log('_inlineMonthpicker() started');
             var divSpan = $(target);
-            if (divSpan.hasClass(this.markerClassName))
+            if (divSpan.hasClass(this.markerClassName)) {
                 return;
+            }
             divSpan.addClass(this.markerClassName).append(inst.dpDiv).
                 bind("setData.monthpicker", function(event, key, value){
                     inst.settings[key] = value;
@@ -199,34 +200,6 @@
                 cover.css({left: -borders[0], top: -borders[1], width: inst.dpDiv.outerWidth(), height: inst.dpDiv.outerHeight()})
             }
             inst.dpDiv.find('.' + this._dayOverClass + ' a').mouseover();
-            /*
-             var numMonths = this._getNumberOfMonths(inst);
-             var cols = numMonths[1];
-             var width = 17;
-             inst.dpDiv.removeClass('ui-monthpicker-multi-2 ui-monthpicker-multi-3 ui-monthpicker-multi-4').width('');
-             if (cols > 1)
-             inst.dpDiv.addClass('ui-datepicker-multi-' + cols).css('width', (width * cols) + 'em');
-             inst.dpDiv[(numMonths[0] != 1 || numMonths[1] != 1 ? 'add' : 'remove') +
-             'Class']('ui-datepicker-multi');
-             inst.dpDiv[(this._get(inst, 'isRTL') ? 'add' : 'remove') +
-             'Class']('ui-datepicker-rtl');
-             if (inst == $.datepicker._curInst && $.datepicker._datepickerShowing && inst.input &&
-             // #6694 - don't focus the input if it's already focused
-             // this breaks the change event in IE
-             inst.input.is(':visible') && !inst.input.is(':disabled') && inst.input[0] != document.activeElement)
-             inst.input.focus();
-             // deffered render of the years select (to avoid flashes on Firefox)
-             if( inst.yearshtml ){
-             var origyearshtml = inst.yearshtml;
-             setTimeout(function(){
-             //assure that inst.yearshtml didn't change.
-             if( origyearshtml === inst.yearshtml && inst.yearshtml ){
-             inst.dpDiv.find('select.ui-datepicker-year:first').replaceWith(inst.yearshtml);
-             }
-             origyearshtml = inst.yearshtml = null;
-             }, 0);
-             }
-             */
         },
 
         /* Retrieve the size of left and top borders for an element.
@@ -282,7 +255,7 @@
                 return;
             }
             this._adjustInstDate(inst, offset +
-                (period == 'M' ? this._get(inst, 'showCurrentAtPos') : 0), // undo positioning
+                (period === 'M' ? this._get(inst, 'showCurrentAtPos') : 0), // undo positioning
                 period);
             console.log('inst.drawMonth: ' + inst.drawMonth + ', inst.drawYear: ' + inst.drawYear);
             this._updateMonthpicker(inst);
@@ -297,8 +270,9 @@
                 return false;
             }
             for (var i = 0; i < this._disabledInputs.length; i++) {
-                if (this._disabledInputs[i] == target)
+                if (this._disabledInputs[i] == target) {
                     return true;
+                }
             }
             return false;
         },
@@ -308,24 +282,25 @@
             console.log('_adjustInstDate() started');
             console.log('offset: ' + offset);
             console.log('period: ' + period);
-            var year = inst.drawYear + (period == 'Y' ? offset : 0);
-            var month = inst.drawMonth + (period == 'M' ? offset : 0);
+            var year = inst.drawYear + (period === 'Y' ? offset : 0);
+            var month = inst.drawMonth + (period === 'M' ? offset : 0);
             var date = new Date(year, month, 1);
 //        inst.drawMonth = inst.selectedMonth = date.getMonth();
 //        inst.drawYear = inst.selectedYear = date.getFullYear();
             this._selectYearMonth(inst, date.getFullYear(), date.getMonth());
 //        console.log('inst.drawMonth: ' + inst.drawMonth + ', inst.drawYear: ' + inst.drawYear);
-            if (period == 'M' || period == 'Y')
+            if (period === 'M' || period === 'Y') {
                 this._notifyChange(inst);
+            }
             console.log('_adjustInstDate() done');
         },
 
         /* Notify change of month/year. */
         _notifyChange: function(inst) {
             var onChange = this._get(inst, 'onChangeMonthYear');
-            if (onChange)
-                onChange.apply((inst.input ? inst.input[0] : null),
-                    [inst.selectedYear, inst.selectedMonth + 1, inst]);
+            if (onChange) {
+                onChange.apply((inst.input ? inst.input[0] : null), [inst.selectedYear, inst.selectedMonth + 1, inst]);
+            }
         },
 
         /* Generate the month and year header. */
@@ -338,16 +313,18 @@
             var monthHtml = '';
             // month selection
             monthHtml += '<span class="ui-monthpicker-month">' + monthNames[drawMonth] + '</span>';
-            if (!showMonthAfterYear)
+            if (!showMonthAfterYear) {
                 html += monthHtml + (!(changeMonth && changeYear) ? '&#xa0;' : '');
+            }
             // year selection
             if ( !inst.yearshtml ) {
                 inst.yearshtml = '';
                 html += '<span class="ui-monthpicker-year">' + drawYear + '</span>';
             }
             html += this._get(inst, 'yearSuffix');
-            if (showMonthAfterYear)
+            if (showMonthAfterYear) {
                 html += (secondary || !(changeMonth && changeYear) ? '&#xa0;' : '') + monthHtml;
+            }
             html += '</div>'; // Close monthpicker_header
             return html;
         },
@@ -374,13 +351,13 @@
 
             var html = '<table border="0" cellpadding="0" cellspacing="0" class="ui-monthpicker-group ui-monthpicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
                 '<tbody><tr>' +
-                '<td class="ui-monthpicker-prev-year ui-corner-all" onclick="DP_jQuery_' + dpuuid + '.monthpicker._adjustDate(\'#' + inst.id + '\', -' + stepYears + ', \'Y\');"><<</td>' +
-                '<td class="ui-monthpicker-prev-month ui-corner-all" onclick="DP_jQuery_' + dpuuid + '.monthpicker._adjustDate(\'#' + inst.id + '\', -' + stepMonths + ', \'M\');"><</td>' +
-                '<td class="ui-monthpicker-month-year-cell ui-corner-all" onclick="DP_jQuery_' + dpuuid + '.monthpicker._showMonthYearPicker(\'#' + inst.id + '\');">' +
+                '<td class="ui-monthpicker-prev-year ui-corner-all" onclick="MP_jQuery_' + mpuuid + '.monthpicker._adjustDate(\'#' + inst.id + '\', -' + stepYears + ', \'Y\');"><<</td>' +
+                '<td class="ui-monthpicker-prev-month ui-corner-all" onclick="MP_jQuery_' + mpuuid + '.monthpicker._adjustDate(\'#' + inst.id + '\', -' + stepMonths + ', \'M\');"><</td>' +
+                '<td class="ui-monthpicker-month-year-cell ui-corner-all" onclick="MP_jQuery_' + mpuuid + '.monthpicker._showMonthYearPicker(\'#' + inst.id + '\');">' +
                 this._generateMonthYearHeader(inst, drawMonth, drawYear, minDate, maxDate,
                     false, monthNames, monthNamesShort) + '</td>' +
-                '<td class="ui-monthpicker-next-month ui-corner-all" onclick="DP_jQuery_' + dpuuid + '.monthpicker._adjustDate(\'#' + inst.id + '\', ' + stepMonths + ', \'M\');">></td>' +
-                '<td class="ui-monthpicker-next-year ui-corner-all" onclick="DP_jQuery_' + dpuuid + '.monthpicker._adjustDate(\'#' + inst.id + '\', ' + stepYears + ', \'Y\');">>></td>' +
+                '<td class="ui-monthpicker-next-month ui-corner-all" onclick="MP_jQuery_' + mpuuid + '.monthpicker._adjustDate(\'#' + inst.id + '\', ' + stepMonths + ', \'M\');">></td>' +
+                '<td class="ui-monthpicker-next-year ui-corner-all" onclick="MP_jQuery_' + mpuuid + '.monthpicker._adjustDate(\'#' + inst.id + '\', ' + stepYears + ', \'Y\');">>></td>' +
                 '</tr></tbody></table>';
             console.log('_generateHTML done');
             return html;
@@ -454,21 +431,21 @@
             var monthNamesShort = this._get(inst, 'monthNamesShort');
             var html = '<table border="0" cellpadding="0" cellspacing="0" class="ui-monthpicker-picker ui-helper-clearfix ui-corner-all">' +
                 '<tbody>' +
-                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-0" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 0 + ');">' + monthNamesShort[0] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-6" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 6 + ');">' + monthNamesShort[6] + '</button></td>' +
-                '   <td class=""><button class="ui-monthpicker-picker-prev-year-cell ui-button ui-button-text-only ui-corner-all" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickPrevYearSet(\'#' + inst.id + '\');"><</button></td><td class=""><button class="ui-monthpicker-picker-next-year-cell ui-button ui-button-text-only ui-corner-all"  onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickNextYearSet(\'#' + inst.id + '\');">></button></td></tr>' +
-                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-1" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 1 + ');">' + monthNamesShort[1] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-7" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 7 + ');">' + monthNamesShort[7] + '</button></td>' +
-                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-0" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 0 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-5" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 5 + ');"></button></td></tr>' +
-                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-2" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 2 + ');">' + monthNamesShort[2] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-8" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 8 + ');">' + monthNamesShort[8] + '</button></td>' +
-                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-1" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 1 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-6" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 6 + ');"></button></td></tr>' +
-                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-3" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 3 + ');">' + monthNamesShort[3] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-9" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 9 + ');">' + monthNamesShort[9] + '</button></td>' +
-                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-2" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 2 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-7" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 7 + ');"></button></td></tr>' +
-                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-4" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 4 + ');">' + monthNamesShort[4] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-10" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 10 + ');">' + monthNamesShort[10] + '</button></td>' +
-                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-3" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 3 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-8" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 8 + ');"></button></td></tr>' +
-                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-5" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 5 + ');">' + monthNamesShort[5] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-11" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 11 + ');">' + monthNamesShort[11] + '</button></td>' +
-                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-4" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 4 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-9" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 9 + ');"></button></td></tr>' +
+                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-0" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 0 + ');">' + monthNamesShort[0] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-6" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 6 + ');">' + monthNamesShort[6] + '</button></td>' +
+                '   <td class=""><button class="ui-monthpicker-picker-prev-year-cell ui-button ui-button-text-only ui-corner-all" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickPrevYearSet(\'#' + inst.id + '\');"><</button></td><td class=""><button class="ui-monthpicker-picker-next-year-cell ui-button ui-button-text-only ui-corner-all"  onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickNextYearSet(\'#' + inst.id + '\');">></button></td></tr>' +
+                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-1" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 1 + ');">' + monthNamesShort[1] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-7" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 7 + ');">' + monthNamesShort[7] + '</button></td>' +
+                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-0" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 0 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-5" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 5 + ');"></button></td></tr>' +
+                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-2" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 2 + ');">' + monthNamesShort[2] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-8" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 8 + ');">' + monthNamesShort[8] + '</button></td>' +
+                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-1" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 1 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-6" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 6 + ');"></button></td></tr>' +
+                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-3" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 3 + ');">' + monthNamesShort[3] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-9" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 9 + ');">' + monthNamesShort[9] + '</button></td>' +
+                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-2" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 2 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-7" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 7 + ');"></button></td></tr>' +
+                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-4" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 4 + ');">' + monthNamesShort[4] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-10" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 10 + ');">' + monthNamesShort[10] + '</button></td>' +
+                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-3" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 3 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-8" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 8 + ');"></button></td></tr>' +
+                '<tr><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-5" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 5 + ');">' + monthNamesShort[5] + '</button></td><td class="ui-monthpicker-picker-month-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-month-11" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectMonth(\'#' + inst.id + '\',' + 11 + ');">' + monthNamesShort[11] + '</button></td>' +
+                '   <td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-4" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 4 + ');"></button></td><td class="ui-monthpicker-picker-year-cell"><button class="ui-button ui-button-text-only ui-corner-all ui-monthpicker-picker-year-9" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickSelectYear(\'#' + inst.id + '\',' + 9 + ');"></button></td></tr>' +
                 '<tr class="ui-widget-header">' +
-                '<td colspan="2" class="ui-monthpicker-picker-ok-cell"><button class="ui-monthpicker-picker-ok-btn ui-widget ui-button ui-button-text-only ui-state-default ui-corner-all" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickOk(\'#' + inst.id + '\');">OK</button></td>' +
-                '<td colspan="2" class="ui-monthpicker-picker-cancel-cell"><button class="ui-monthpicker-picker-cancel-btn ui-widget ui-button ui-button-text-only ui-state-default ui-corner-all" onclick="DP_jQuery_' + dpuuid + '.monthpicker._onClickCancel(\'#' + inst.id + '\');">Cancel</button></td>' +
+                '<td colspan="2" class="ui-monthpicker-picker-ok-cell"><button class="ui-monthpicker-picker-ok-btn ui-widget ui-button ui-button-text-only ui-state-default ui-corner-all" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickOk(\'#' + inst.id + '\');">OK</button></td>' +
+                '<td colspan="2" class="ui-monthpicker-picker-cancel-cell"><button class="ui-monthpicker-picker-cancel-btn ui-widget ui-button ui-button-text-only ui-state-default ui-corner-all" onclick="MP_jQuery_' + mpuuid + '.monthpicker._onClickCancel(\'#' + inst.id + '\');">Cancel</button></td>' +
                 '</tr>' +
                 '</tbody></table>';
             console.log('_generateMonthpickerHTML() done');
@@ -488,7 +465,7 @@
             offset.left -= (isFixed && offset.left == inst.input.offset().left) ? $(document).scrollLeft() : 0;
             offset.top -= (isFixed && offset.top == (inst.input.offset().top + inputHeight)) ? $(document).scrollTop() : 0;
 
-            // now check if datepicker is showing outside window viewport - move to a better place if so.
+            // now check if monthpicker is showing outside window viewport - move to a better place if so.
             offset.left -= Math.min(offset.left, (offset.left + dpWidth > viewWidth && viewWidth > dpWidth) ?
                 Math.abs(offset.left + dpWidth - viewWidth) : 0);
             offset.top -= Math.min(offset.top, (offset.top + dpHeight > viewHeight && viewHeight > dpHeight) ?
@@ -618,21 +595,21 @@
 
             var result = null;
             if (ym != null) {
-                if (typeof ym == 'number' && !isNaN(ym)) {
+                if (typeof ym === 'number' && !isNaN(ym)) {
                     result = parseNumeric(ym);
-                } else if (typeof ym == 'string') {
+                } else if (typeof ym === 'string') {
                     result = parseString(ym);
-                } else if (typeof ym == 'object') {
+                } else if (typeof ym === 'object') {
                     result = ym.getFullYear() * 100 + ym.getMonth();
                 }
             }
             if (result == null && defaultYM != null) {
                 console.log('defaultYM: ' + defaultYM);
-                if (typeof defaultYM == 'number' && !isNaN(defaultYM)) {
+                if (typeof defaultYM === 'number' && !isNaN(defaultYM)) {
                     result = parseNumeric(ym);
-                } else if (typeof defaultYM == 'string') {
+                } else if (typeof defaultYM === 'string') {
                     result = parseString(ym);
-                } else if (typeof defaultYM == 'object') {
+                } else if (typeof defaultYM === 'object') {
                     result = defaultYM.getFullYear() * 100 + defaultYM.getMonth();
                 }
             }
@@ -694,10 +671,18 @@
                 }
                 elem.parents('.ui-monthpicker-calendar').find('a').removeClass('ui-state-hover');
                 elem.addClass('ui-state-hover');
-                if (elem.hasClass('ui-monthpicker-prev-year')) elem.addClass('ui-monthpicker-prev-year-hover');
-                if (elem.hasClass('ui-monthpicker-month-year')) elem.addClass('ui-monthpicker-prev-month-hover');
-                if (elem.hasClass('ui-monthpicker-next-month')) elem.addClass('ui-monthpicker-next-month-hover');
-                if (elem.hasClass('ui-monthpicker-next-year')) elem.addClass('ui-monthpicker-next-year-hover');
+                if (elem.hasClass('ui-monthpicker-prev-year')) {
+                    elem.addClass('ui-monthpicker-prev-year-hover');
+                }
+                if (elem.hasClass('ui-monthpicker-month-year')) {
+                    elem.addClass('ui-monthpicker-prev-month-hover');
+                }
+                if (elem.hasClass('ui-monthpicker-next-month')) {
+                    elem.addClass('ui-monthpicker-next-month-hover');
+                }
+                if (elem.hasClass('ui-monthpicker-next-year')) {
+                    elem.addClass('ui-monthpicker-next-year-hover');
+                }
             });
     }
 
@@ -723,19 +708,29 @@
                 elem.addClass('ui-state-hover');
 //            elem.addClass('ui-corner-all');
 //            elem.addClass('ui-state-default ui-corner-all');
-                if (elem.hasClass('ui-monthpicker-picker-month-cell')) elem.addClass('ui-monthpicker-picker-month-cell-hover');
-                if (elem.hasClass('ui-monthpicker-picker-year-cell')) elem.addClass('ui-monthpicker-picker-year-cell-hover');
-                if (elem.hasClass('ui-monthpicker-picker-prev-year-cell')) elem.addClass('ui-monthpicker-picker-prev-year-cell-hover');
-                if (elem.hasClass('ui-monthpicker-picker-next-year-cell')) elem.addClass('ui-monthpicker-picker-next-year-cell-hover');
+                if (elem.hasClass('ui-monthpicker-picker-month-cell')) {
+                    elem.addClass('ui-monthpicker-picker-month-cell-hover');
+                }
+                if (elem.hasClass('ui-monthpicker-picker-year-cell')) {
+                    elem.addClass('ui-monthpicker-picker-year-cell-hover');
+                }
+                if (elem.hasClass('ui-monthpicker-picker-prev-year-cell')) {
+                    elem.addClass('ui-monthpicker-picker-prev-year-cell-hover');
+                }
+                if (elem.hasClass('ui-monthpicker-picker-next-year-cell')) {
+                    elem.addClass('ui-monthpicker-picker-next-year-cell-hover');
+                }
             });
     }
 
     /* jQuery extend now ignores nulls! */
     function extendRemove(target, props) {
         $.extend(target, props);
-        for (var name in props)
-            if (props[name] == null || props[name] == undefined)
+        for (var name in props) {
+            if (props[name] == null || props[name] === undefined) {
                 target[name] = props[name];
+            }
+        }
         return target;
     }
 
@@ -760,14 +755,14 @@
         }
 
         var otherArgs = Array.prototype.slice.call(arguments, 1);
-        if (typeof options == 'string' && (options == 'isDisabled' || options == 'getYear' || options == 'getMonth' || options == 'getYearMonth' || options == 'widget')) {
+        if (typeof options === 'string' && (options == 'isDisabled' || options == 'getYear' || options == 'getMonth' || options == 'getYearMonth' || options == 'widget')) {
             return $.monthpicker['_' + options + 'Monthpicker'].apply($.monthpicker, [this[0]].concat(otherArgs));
         }
-        if (options == 'option' && arguments.length == 2 && typeof arguments[1] == 'string') {
+        if (options === 'option' && arguments.length === 2 && typeof arguments[1] === 'string') {
             return $.monthpicker['_' + options + 'Monthpicker'].apply($.monthpicker, [this[0]].concat(otherArgs));
         }
         var result = this.each(function() {
-            typeof options == 'string' ?
+            typeof options === 'string' ?
                 $.monthpicker['_' + options + 'Monthpicker'].apply($.monthpicker, [this].concat(otherArgs)) : $.monthpicker._attachMonthpicker(this, options);
         });
         console.log('$.fn.monthpicker() done');
@@ -780,7 +775,6 @@
     $.monthpicker.uuid = new Date().getTime();
     $.monthpicker.version = "@VERSION";
 
-    // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers
-    window['DP_jQuery_' + dpuuid] = $;
+    window['MP_jQuery_' + mpuuid] = $;
 })(jQuery);
