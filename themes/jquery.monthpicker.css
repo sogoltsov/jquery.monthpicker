@@ -1,0 +1,102 @@
+.ui-monthpicker-prev-year, .ui-monthpicker-prev-month, .ui-monthpicker-next-month, .ui-monthpicker-next-year, .ui-monthpicker-month-year-cell {
+    cursor: pointer;
+    padding: 2px 3px 2px 3px;
+    white-space: nowrap;
+    text-align:center;
+    /*width: 1.1em;*/
+    height: 1.8em;
+}
+.ui-monthpicker-prev-year, .ui-monthpicker-prev-month, .ui-monthpicker-next-month, .ui-monthpicker-next-year {
+    width: 1.2em;
+}
+
+
+.ui-monthpicker-prev-year.ui-state-hover, .ui-monthpicker-prev-month.ui-state-hover, .ui-monthpicker-next-month.ui-state-hover, .ui-monthpicker-next-year.ui-state-hover, .ui-monthpicker-month-year-cell.ui-state-hover {
+    padding: 1px 2px 1px 2px;
+}
+
+.ui-monthpicker {
+    width: 17em;
+}
+
+.ui-monthpicker-header {
+    width:100%;
+}
+
+.ui-monthpicker-month-year-cell {
+    /*width: 7em;*/
+}
+
+.ui-monthpicker-picker {
+    width:100%;
+}
+
+.ui-monthpicker-picker td {
+    white-space: nowrap;
+    text-align:center;
+}
+.ui-monthpicker-picker tr.ui-widget-header {
+    height: 1.8em;
+}
+
+.ui-monthpicker-picker-ok-btn, .ui-monthpicker-picker-cancel-btn {
+    white-space: nowrap;
+    text-align:center;
+    cursor: pointer;
+    width:5em;
+    height:1.7em;
+    vertical-align: baseline;
+}
+
+div.ui-monthpicker-picker-ok-btn {
+    float: right;
+}
+div.ui-monthpicker-picker-cancel-btn {
+    float: left;
+}
+
+tr > td.ui-monthpicker-picker-ok-cell {
+    text-align:right;
+    padding: 5px 1px 5px 5px;
+    width:50%;
+}
+
+tr > td.ui-monthpicker-picker-cancel-cell {
+    text-align:left;
+    padding: 5px 5px 5px 1px;
+    width:50%;
+}
+
+.ui-monthpicker-picker-month-cell, .ui-monthpicker-picker-year-cell {
+    width:25%;
+}
+
+.ui-monthpicker-picker-month-cell > button.ui-button, .ui-monthpicker-picker-year-cell > button.ui-button, .ui-monthpicker-picker-prev-year-cell, .ui-monthpicker-picker-next-year-cell {
+    width:95%;
+}
+
+.ui-monthpicker-picker-month-cell:nth-of-type(2) {
+    border-right: 1px solid;
+    border-right-color: #BED6F8;
+}
+
+.ui-monthpicker-picker td { border: 0; padding: 1px; text-align: center;}
+
+/*
+.ui-monthpicker-picker td a { display: block; padding: .2em; text-align: center; text-decoration: none; }
+*/
+
+.ui-monthpicker-picker-month-cell button, .ui-monthpicker-picker-year-cell button, .ui-monthpicker-picker-prev-year-cell, .ui-monthpicker-picker-next-year-cell {
+    border: none;
+    background-color: inherit;
+}
+
+.ui-monthpicker-prev-month-hover {
+    /*display: block; padding: .2em; text-align: center; */
+    /*text-decoration: none;*/
+}
+
+.ui-monthpicker-picker tbody tr td {
+    /*height: 1.6em;*/
+    height: 1.8em;
+}
