@@ -18,6 +18,7 @@
     var PROP_NAME = 'monthpicker';
     var mpuuid = new Date().getTime();
     var instActive;
+    var console = window.console;
 
     function Monthpicker() {
         console.log('Monthpicker() started');
@@ -77,11 +78,6 @@
             }
         },
 
-        // TODO rename to "widget" when switching to widget factory
-        _widgetMonthpicker: function() {
-            return this.dpDiv;
-        },
-
         /* Override the default settings for all instances of the date picker.
          @param  settings  object - the new settings to use as defaults (anonymous object)
          @return the manager object */
@@ -101,11 +97,14 @@
                 var attrValue = target.getAttribute('date:' + attrName);
                 if (attrValue) {
                     inlineSettings = inlineSettings || {};
+/*  eval is EVIL
                     try {
                         inlineSettings[attrName] = eval(attrValue);
                     } catch (err) {
                         inlineSettings[attrName] = attrValue;
                     }
+*/
+                    inlineSettings[attrName] = attrValue;
                 }
             }
             var nodeName = target.nodeName.toLowerCase();
@@ -128,7 +127,7 @@
         /* Create a new instance object. */
         _newInst: function(target, inline) {
             console.log('_newInst() started');
-            var id = target[0].id.replace(/([^A-Za-z0-9_-])/g, '\\\\$1'); // escape jQuery meta chars
+            var id = target[0].id.replace(/([^A-Za-z0-9_\-])/g, '\\\\$1'); // escape jQuery meta chars
             var result = {id: id, input: target, // associated target
                 selectedDay: 0, selectedMonth: 0, selectedYear: 0, // current selection
                 drawMonth: 0, drawYear: 0, // month being drawn
@@ -198,7 +197,7 @@
             inst.dpDiv.empty().append(this._generateHTML(inst));
             var cover = inst.dpDiv.find('iframe.ui-monthpicker-cover'); // IE6- only
             if( !!cover.length ){ //avoid call to outerXXXX() when not in IE6
-                cover.css({left: -borders[0], top: -borders[1], width: inst.dpDiv.outerWidth(), height: inst.dpDiv.outerHeight()})
+                cover.css({left: -borders[0], top: -borders[1], width: inst.dpDiv.outerWidth(), height: inst.dpDiv.outerHeight()});
             }
             inst.dpDiv.find('.' + this._dayOverClass + ' a').mouseover();
         },
@@ -271,7 +270,7 @@
                 return false;
             }
             for (var i = 0; i < this._disabledInputs.length; i++) {
-                if (this._disabledInputs[i] == target) {
+                if (this._disabledInputs[i] === target) {
                     return true;
                 }
             }
@@ -378,7 +377,7 @@
             }
             var isFixed = false;
             inst.dpDiv.parents().each(function() {
-                isFixed |= $(this).css('position') == 'fixed';
+                isFixed |= $(this).css('position') === 'fixed';
                 return !isFixed;
             });
             console.log('isFixed: ' + isFixed);
@@ -464,8 +463,8 @@
             var viewHeight = document.documentElement.clientHeight + $(document).scrollTop();
 
             offset.left -= (this._get(inst, 'isRTL') ? (dpWidth - inputWidth) : 0);
-            offset.left -= (isFixed && offset.left == inst.input.offset().left) ? $(document).scrollLeft() : 0;
-            offset.top -= (isFixed && offset.top == (inst.input.offset().top + inputHeight)) ? $(document).scrollTop() : 0;
+            offset.left -= (isFixed && offset.left === inst.input.offset().left) ? $(document).scrollLeft() : 0;
+            offset.top -= (isFixed && offset.top === (inst.input.offset().top + inputHeight)) ? $(document).scrollTop() : 0;
 
             // now check if monthpicker is showing outside window viewport - move to a better place if so.
             offset.left -= Math.min(offset.left, (offset.left + dpWidth > viewWidth && viewWidth > dpWidth) ?
@@ -648,6 +647,11 @@
             this._updateMonthpicker(inst);
             this._selectMonth(inst, inst.selectedMonth);
             this._selectYear(inst, inst.selectedYear);
+        },
+        _widgetMonthpicker: function(target) {
+            var inst = this._getInst(target);
+            return inst.dpDiv;
+//            return this.msMPDiv;
         }
     });
 
@@ -757,15 +761,18 @@
         }
 
         var otherArgs = Array.prototype.slice.call(arguments, 1);
-        if (typeof options === 'string' && (options == 'isDisabled' || options == 'getYear' || options == 'getMonth' || options == 'getYearMonth' || options == 'widget')) {
+        if (typeof options === 'string' && (options === 'isDisabled' || options === 'getYear' || options === 'getMonth' || options === 'getYearMonth' || options === 'widget')) {
             return $.monthpicker['_' + options + 'Monthpicker'].apply($.monthpicker, [this[0]].concat(otherArgs));
         }
         if (options === 'option' && arguments.length === 2 && typeof arguments[1] === 'string') {
             return $.monthpicker['_' + options + 'Monthpicker'].apply($.monthpicker, [this[0]].concat(otherArgs));
         }
         var result = this.each(function() {
-            typeof options === 'string' ?
-                $.monthpicker['_' + options + 'Monthpicker'].apply($.monthpicker, [this].concat(otherArgs)) : $.monthpicker._attachMonthpicker(this, options);
+            if (typeof options === 'string') {
+                $.monthpicker['_' + options + 'Monthpicker'].apply($.monthpicker, [this].concat(otherArgs));
+            } else {
+                $.monthpicker._attachMonthpicker(this, options);
+            }
         });
         console.log('$.fn.monthpicker() done');
         return result;
@@ -779,4 +786,4 @@
 
 // Add another global to avoid noConflict issues with inline event handlers
     window['MP_jQuery_' + mpuuid] = $;
-})(jQuery);
+}(jQuery));
