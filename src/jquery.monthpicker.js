@@ -34,9 +34,11 @@
             var self = this,
                 options = self.options;
             this.ym = this._getDefaultYM();
-            this.mpDiv = $('<div class="ui-monthpicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>').append(this._generateHTML());
+            this.mpDiv = self.element;
+            self.element.addClass(' ui-monthpicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ').append(this._generateHTML());
+//            this.mpDiv = $('<div class="ui-monthpicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>').append(this._generateHTML());
             this._bindHover();
-            this.mpDiv.appendTo(self.element);
+//            this.mpDiv.appendTo(self.element);
             self.ymButton = this.mpDiv.find('.ui-monthpicker-month-year-cell');
             self.prevYearButton = self.element.find('.ui-monthpicker-prev-year');
             self.prevMonthButton = self.element.find('.ui-monthpicker-prev-month');
@@ -74,8 +76,6 @@
                     self._adjustYM(100);
                 }
             });
-            console.log("self.element: ");
-            console.log(self.element);
             self.mainPickerDiv = $('<div class="ui-monthpicker-popup ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>').append(this._generateMonthpickerHTML());
             this._bindHoverPopup();
             self.mainPickerDiv.css("display", "none");
@@ -89,17 +89,15 @@
                 self.mainPickerDiv.hide();
             });
             self.mainPickerDiv.find('.ui-monthpicker-picker-prev-year-cell').bind("click.monthpicker", function() {
-                console.log("self.baseYear: " + self.baseYear);
                 self.baseYear -= 10;
                 self._selectYear(self.drawYear);
             });
             self.mainPickerDiv.find('.ui-monthpicker-picker-next-year-cell').bind("click.monthpicker", function() {
-                console.log("self.baseYear: " + self.baseYear);
                 self.baseYear += 10;
                 self._selectYear(self.drawYear);
             });
             self.mainPickerDiv.find('.ui-monthpicker-picker-year-cell button').bind("click.monthpicker", function(event) {
-                var year = parseInt(event.srcElement.innerText);
+                var year = parseInt(event.srcElement.innerText, 10);
                 if (!isNaN(year)) {
                     self.drawYear = year;
                     self._selectYear(self.drawYear);
@@ -122,7 +120,6 @@
 
             $('body').append(self.mainPickerDiv);
             self.ymButton.bind("click.monthpicker", function (event) {
-                console.log("click.monthpicker: " + event);
                 self._showMonthYearPicker();
             });
         },
@@ -135,7 +132,6 @@
 
             if (!self._pos) { // position below input
                 var lposition = self.mpDiv.offset();
-                console.log('position.top: ' + lposition.top + ', position.left: ' + lposition.left);
                 self._pos = [lposition.left, lposition.top];
 //            $.monthpicker._pos[1] += inst.dpDiv.offsetHeight; // add the height
             }
@@ -157,9 +153,6 @@
 
             offset = this._checkOffset(offset, isFixed);
             var position = (self._inDialog && $.blockUI ? 'static' : (isFixed ? 'fixed' : 'absolute'));
-            console.log('position: ' + position);
-            console.log('offset.top: ' + offset.top);
-            console.log('offset.left: ' + offset.left);
             var width = self.mpDiv.innerWidth();
             self.mainPickerDiv.css({position:position, display:'none', left:offset.left + 'px', top:offset.top + 'px', width:width + 'px'});
 
@@ -175,10 +168,10 @@
             };
             self.mainPickerDiv.show(true, null, self.options.duration, postProcess); //use jQuery().show() instead this
 //            self.mainPickerDiv.show(duration, $.monthpicker._get(inst, 'showOptions'), postProcess);
-            console.log('_showMonthYearPicker() done');
         },
         /* Check positioning to remain on screen. */
         _checkOffset:function (offset, isFixed) {
+            var self = this;
             var dpWidth = this.mainPickerDiv.outerWidth();
             var dpHeight = this.mainPickerDiv.outerHeight();
             var inputWidth = this.mpDiv ? this.mpDiv.outerWidth() : 0;
@@ -223,7 +216,6 @@
         /* Adjust one of the date sub-fields. */
         _adjustYM:function (offset) {
             this.ym = this._calcYM(this.ym, offset);
-            console.log('ym: ' + this.ym);
             this.ymButton.empty().append(this._generateMonthYearHeader());
             this._trigger('change', null, this.ym);
         },
@@ -243,11 +235,13 @@
         },
         // Use the _setOption method to respond to changes to options
         _setOption:function (key, value) {
+/*
             switch (key) {
                 case "clear":
                     // handle changes to clear option
                     break;
             }
+*/
 
             // In jQuery UI 1.8, you have to manually invoke the _setOption method from the base widget
             $.Widget.prototype._setOption.apply(this, arguments);
@@ -283,11 +277,9 @@
             var elem = $(this.mainPickerDiv).find(selector);
             elem.removeClass('ui-state-default');
             elem = $(this.mainPickerDiv).find('.ui-monthpicker-picker-month-' + month);
-            console.log(elem);
             elem.addClass('ui-state-default');
         },
         _selectYear: function(year) {
-            console.log(this.baseYear);
             var selector = '.ui-monthpicker-picker-year-cell button';
             var elem = $(this.mainPickerDiv).find(selector);
             for (var i = 0; i < 5; i++) {
@@ -298,7 +290,6 @@
             if (this.drawYear - 5 < year && this.baseYear + 6 > year) {
                 var yearPosition = year - this.baseYear + 4;
                 elem = $(this.mainPickerDiv).find('.ui-monthpicker-picker-year-' + yearPosition);
-                console.log(elem);
                 elem.addClass('ui-state-default');
             }
         },
@@ -323,7 +314,6 @@
         },
         /* Generate the HTML for the current state of the date picker. */
         _generateHTML:function () {
-            console.log('_generateHTML started');
             var html = '<table border="0" cellpadding="0" cellspacing="0" class="ui-monthpicker-group ui-monthpicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
                 '<tbody><tr>' +
                 '<td class="ui-monthpicker-prev-year ui-corner-all"><<</td>' +
@@ -333,11 +323,9 @@
                 '<td class="ui-monthpicker-next-month ui-corner-all">></td>' +
                 '<td class="ui-monthpicker-next-year ui-corner-all">>></td>' +
                 '</tr></tbody></table>';
-            console.log('_generateHTML done');
             return html;
         },
         _generateMonthpickerHTML:function () {
-            console.log('_generateMonthpickerHTML() started');
             var monthNamesShort = this.options.monthNamesShort;
             var html = '<table border="0" cellpadding="0" cellspacing="0" class="ui-monthpicker-picker ui-helper-clearfix ui-corner-all">' +
                 '<tbody>' +
@@ -360,7 +348,6 @@
                 '<td colspan="2" class="ui-monthpicker-picker-cancel-cell"><button class="ui-monthpicker-picker-cancel-btn ui-widget ui-button ui-button-text-only ui-state-default ui-corner-all">Cancel</button></td>' +
                 '</tr>' +
                 '</tbody></table>';
-            console.log('_generateMonthpickerHTML() done');
             return html;
         },
         /*

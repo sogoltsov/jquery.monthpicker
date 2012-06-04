@@ -22,15 +22,17 @@
      raises(block, [expected], [message])
      */
 
-    module('jQuery#monthpicker', {
+    module('jQuery.monthpicker', {
+/*
         setup:function () {
             this.elems = $('#qunit-fixture').children();
         }
+*/
     });
 
     test("widget method", function () {
         var actual = $("#mp1").monthpicker().monthpicker("widget")[0];
-        deepEqual($("#mp1 > .ui-monthpicker:last")[0], actual);
+        deepEqual($("#mp1.ui-monthpicker:last")[0], actual);
     });
 
 /*

@@ -7,7 +7,7 @@
     height: 1.8em;
 }
 .ui-monthpicker-prev-year, .ui-monthpicker-prev-month, .ui-monthpicker-next-month, .ui-monthpicker-next-year {
-    width: 1.2em;
+    width: 2em;
 }
 
 
@@ -16,7 +16,7 @@
 }
 
 .ui-monthpicker {
-    width: 17em;
+    width: 20em;
 }
 
 .ui-monthpicker-header {
