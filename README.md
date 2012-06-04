@@ -3,7 +3,7 @@
 Year&Month picker jquery component
 
 ## Getting Started
-Download the [production version][min] or the [development version][max].
+Download the NON[production version][min] or the [development version][max].
 
 [min]: https://raw.github.com/sogoltsov/jquery.monthpicker/master/dist/jquery.monthpicker.min.js
 [max]: https://raw.github.com/sogoltsov/jquery.monthpicker/master/dist/jquery.monthpicker.js
@@ -11,7 +11,10 @@ Download the [production version][min] or the [development version][max].
 In your web page:
 
 ```html
+<link rel="stylesheet" href="jquery.ui.css"></link>
+<link rel="stylesheet" href="dist/jquery.monthpicker.min.css"></link>
 <script src="jquery.js"></script>
+<script src="jquery-ui.js"></script>
 <script src="dist/jquery.monthpicker.min.js"></script>
 <script>
 $(function() {

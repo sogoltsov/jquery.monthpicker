@@ -47,6 +47,15 @@ module.exports = function (grunt) {
                     compile: true,
                     compress: true
                 }
+            },
+            distmin: {
+                src: [
+                    'themes/**/*.css'
+                ],
+                dest: 'dist/jquery.monthpicker.css',
+                options: {
+                    compile: true
+                }
             }
         },
         watch:{
