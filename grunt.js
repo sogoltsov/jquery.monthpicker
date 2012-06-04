@@ -37,6 +37,18 @@ module.exports = function (grunt) {
 //            files:['grunt.js', 'src/**/*.js', 'test/**/*.js']
             files:['src/**/*.js', 'test/**/*.js']
         },
+        recess: {
+            dist: {
+                src: [
+                    'themes/**/*.css'
+                ],
+                dest: 'dist/jquery.monthpicker.min.css',
+                options: {
+                    compile: true,
+                    compress: true
+                }
+            }
+        },
         watch:{
             files:'<config:lint.files>',
             tasks:'lint qunit'
@@ -61,9 +73,10 @@ module.exports = function (grunt) {
         },
         uglify:{}
     });
+    grunt.loadNpmTasks('grunt-recess');
 
     // Default task.
-    grunt.registerTask('default', 'lint qunit concat min');
+    grunt.registerTask('default', 'lint qunit concat recess min');
 
     grunt.registerTask("clean", function () {
 //        var rimraf = require("rimraf");
