@@ -1,0 +1,3 @@
+[submodule "mp.master"]
+	path = mp.master
+	url = git://github.com/sogoltsov/jquery.monthpicker.git
