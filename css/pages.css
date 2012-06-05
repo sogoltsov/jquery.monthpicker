@@ -1,0 +1,71 @@
+* {
+    font-family: Calibri, "Trebuchet MS", "Helvetica Neue", Tahoma, sans-serif;
+}
+
+body {
+    background-image: url(../images/bg.jpg);
+    background-repeat: repeat-x;
+    background-attachment: fixed;
+    background-position-x: 50%;
+    background-position-y: 0%;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: #1A0303;
+
+    /*background: #1A0303 url(../images/bg.jpg) repeat-x top center;*/
+    /*
+        background: #4d0e0e url(../images/bg.jpg) repeat-x top center;
+        background-image: url(../images/bg.jpg);
+        background-repeat-x: repeat;
+        background-repeat-y: no-repeat;
+        background-attachment: initial;
+        background-position-x: 50%;
+        background-position-y: 0%;
+        background-origin: initial;
+        background-clip: initial;
+        background-color: #4d0e0e;
+    */
+    margin-top: 1.0em;
+    color: black;
+    font-size: 100%;
+    line-height: 1.4;
+}
+
+#workspace {
+    position: relative;
+    margin: 0 auto;
+    max-width: 960px;
+    background: white;
+    padding: 1em;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    -o-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+}
+
+.download {
+    float: right;
+}
+
+h1 {
+    font-size: 48px;
+    margin: 0;
+    line-height: 1;
+    font-weight: normal;
+    letter-spacing: -.2px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+}
+h1, h2 {
+    font-family: Corbel, Verdana, Geneva, sans-serif;
+}
+
+.subtitle {
+    font-size: 19px;
+    margin: 5px 0 1em 0;
+    font-style: italic;
+}
+
+p, pre {
+    margin: 0 0 .5em;
+}
+
