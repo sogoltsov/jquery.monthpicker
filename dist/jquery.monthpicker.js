@@ -1,4 +1,4 @@
-/*! jQuery-ui Monthpicker - v0.1.0 - 2012-06-04
+/*! jQuery-ui Monthpicker - v0.1.0 - 2012-06-07
 * https://github.com/sogoltsov/jquery.monthpicker
 * Copyright (c) 2012 Sergey Ogoltsov; Licensed MIT, GPL */
 
@@ -215,7 +215,7 @@
             if (year == null || month == null) {
                 var defaultYM = new Date();
                 if (year == null) {
-                    year = 1900 + defaultYM.getYear();
+                    year = defaultYM.getFullYear();
                 }
                 if (month == null) {
                     month = defaultYM.getMonth();

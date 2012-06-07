@@ -225,7 +225,7 @@
             if (year == null || month == null) {
                 var defaultYM = new Date();
                 if (year == null) {
-                    year = defaultYM.getYear() + ($.browser.msie ? 0 : 1900);
+                    year = defaultYM.getFullYear();
                 }
                 if (month == null) {
                     month = defaultYM.getMonth();
