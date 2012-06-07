@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>jQuery Monthpicker - Default functionality</title>
+
+    <link rel="stylesheet" href="../libs/jquery-ui/css/smoothness/jquery-ui-1.8.20.custom.css">
+<!--
+    <link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css" />
+    <script type="text/javascript" src="http://jqueryui.com/js/jquery.js"></script>
+    <link rel="stylesheet" href="../libs/jquery-ui/themes/redmond/jquery.ui.all.css">
+-->
+    <link rel="stylesheet" href="../themes/jquery.monthpicker.css">
+    <link rel="stylesheet" href="demos.css">
+
+    <script src="../libs/jquery/jquery.js"></script>
+    <script src="../libs/jquery-ui/js/jquery-ui-1.8.20.custom.min.js"></script>
+    <script src="../src/jquery.monthpicker.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#switcher').themeswitcher();
+        });
+        $(function() {
+            $("#monthpicker").monthpicker();
+        });
+    </script>
+</head>
+<body>
+
+<script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
+<div id="switcher"></div>
+
+<div class="demo">
+
+<!--
+    <p>Year/Month: <div id="monthpicker"></div></p>
+-->
+
+</div><!-- End demo -->
+
+Year/Month: <div id="monthpicker"></div>
+
+
+<div class="demo-description">
+    <p>The monthpicker is tied to a standard dev element.</p>
+</div><!-- End demo-description -->
+
+</body>
+</html>
