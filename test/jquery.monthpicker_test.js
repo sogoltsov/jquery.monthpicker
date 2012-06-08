@@ -37,6 +37,27 @@
         mp.monthpicker('destroy').remove();
     });
 
+    test("init", function() {
+        expect(5);
+
+        $("<div></div>").appendTo('body').monthpicker().remove();
+        ok(true, '.monthpicker() called on element');
+
+        $([]).monthpicker().remove();
+        ok(true, '.monthpicker() called on empty collection');
+
+        $('<div></div>').monthpicker().remove();
+        ok(true, '.monthpicker() called on disconnected DOMElement');
+
+        var el = $('<div></div>').monthpicker();
+        var foo = el.monthpicker("option", "foo");
+        el.remove();
+        ok(true, 'arbitrary option getter after init');
+
+        $('<div></div>').monthpicker().monthpicker("option", "foo", "bar").remove();
+        ok(true, 'arbitrary option setter after init');
+    });
+
     test("destroy", function() {
         $("<div></div>").appendTo('body').monthpicker().monthpicker("destroy").remove();
         ok(true, '.monthpicker("destroy") called on element');

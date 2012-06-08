@@ -1,4 +1,4 @@
-/*! jQuery-ui Monthpicker - v0.1.0 - 2012-06-07
+/*! jQuery-ui Monthpicker - v0.1.0 - 2012-06-08
 * https://github.com/sogoltsov/jquery.monthpicker
 * Copyright (c) 2012 Sergey Ogoltsov; Licensed MIT, GPL */
 
