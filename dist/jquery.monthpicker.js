@@ -1,4 +1,4 @@
-/*! jQuery-ui Monthpicker - v0.1.0 - 2012-06-08
+/*! jQuery-ui Monthpicker - v0.1.0 - 2012-06-09
 * https://github.com/sogoltsov/jquery.monthpicker
 * Copyright (c) 2012 Sergey Ogoltsov; Licensed MIT, GPL */
 
@@ -16,7 +16,8 @@
             useShortMonthNames:false,
             yearSuffix:'',
             _inDialog:false, // True if showing within a "dialog", false if not
-            duration:1
+            duration:1,
+            zIndex:null
         },
 
         // Set up the widget
@@ -67,6 +68,12 @@
                 }
             });
             self.mainPickerDiv = $('<div class="ui-monthpicker-popup ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>').append(this._generateMonthpickerHTML());
+            if (!isNaN(self.options.zIndex)) {
+                self.mpDiv.css('z-index', self.options.zIndex);
+            }
+            if (!isNaN(self.mpDiv.css('z-index'))) {
+                self.mainPickerDiv.css('z-index', self.mpDiv.css('z-index') + 1);
+            }
             this._bindHoverPopup();
             self.mainPickerDiv.css("display", "none");
             self.mainPickerDiv.find('.ui-monthpicker-picker-ok-btn').bind("click.monthpicker", function() {
