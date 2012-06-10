@@ -9,7 +9,7 @@
  *  http://docs.jquery.com/UI/
  *
  * Depends:
- *	jquery.ui.core.js
+ *    jquery.ui.core.js
  */
 
 (function ($) {
@@ -26,7 +26,8 @@
             useShortMonthNames:false,
             yearSuffix:'',
             _inDialog:false, // True if showing within a "dialog", false if not
-            duration:1
+            duration:1,
+            input:null
         },
 
         // Set up the widget
@@ -79,31 +80,34 @@
             self.mainPickerDiv = $('<div class="ui-monthpicker-popup ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>').append(this._generateMonthpickerHTML());
             this._bindHoverPopup();
             self.mainPickerDiv.css("display", "none");
-            self.mainPickerDiv.find('.ui-monthpicker-picker-ok-btn').bind("click.monthpicker", function() {
+            self.mainPickerDiv.find('.ui-monthpicker-picker-ok-btn').bind("click.monthpicker", function () {
                 self.ym = self.drawYear * 100 + self.drawMonth;
                 self.ymButton.empty().append(self._generateMonthYearHeader());
                 self.mainPickerDiv.hide();
+                if (self.options.input != null) {
+                    $(self.options.input).val(self.ym);
+                }
                 self._trigger('change', null, self.ym);
             });
-            self.mainPickerDiv.find('.ui-monthpicker-picker-cancel-btn').bind("click.monthpicker", function() {
+            self.mainPickerDiv.find('.ui-monthpicker-picker-cancel-btn').bind("click.monthpicker", function () {
                 self.mainPickerDiv.hide();
             });
-            self.mainPickerDiv.find('.ui-monthpicker-picker-prev-year-cell').bind("click.monthpicker", function() {
+            self.mainPickerDiv.find('.ui-monthpicker-picker-prev-year-cell').bind("click.monthpicker", function () {
                 self.baseYear -= 10;
                 self._selectYear(self.drawYear);
             });
-            self.mainPickerDiv.find('.ui-monthpicker-picker-next-year-cell').bind("click.monthpicker", function() {
+            self.mainPickerDiv.find('.ui-monthpicker-picker-next-year-cell').bind("click.monthpicker", function () {
                 self.baseYear += 10;
                 self._selectYear(self.drawYear);
             });
-            self.mainPickerDiv.find('.ui-monthpicker-picker-year-cell button').bind("click.monthpicker", function(event) {
+            self.mainPickerDiv.find('.ui-monthpicker-picker-year-cell button').bind("click.monthpicker", function (event) {
                 var year = parseInt(event.srcElement.innerText, 10);
                 if (!isNaN(year)) {
                     self.drawYear = year;
                     self._selectYear(self.drawYear);
                 }
             });
-            self.mainPickerDiv.find('.ui-monthpicker-picker-month-cell button').bind("click.monthpicker", function(event) {
+            self.mainPickerDiv.find('.ui-monthpicker-picker-month-cell button').bind("click.monthpicker", function (event) {
                 var button = $(event.srcElement);
                 var month = null;
                 for (var i = 0; i < 12; i++) {
@@ -216,32 +220,48 @@
         /* Adjust one of the date sub-fields. */
         _adjustYM:function (offset) {
             this.ym = this._calcYM(this.ym, offset);
-            this.ymButton.empty().append(this._generateMonthYearHeader());
+            this._update();
+            if (this.options.input != null) {
+                $(this.options.input).val(this.ym);
+            }
             this._trigger('change', null, this.ym);
+        },
+        _getYMFromInput:function () {
+            if (this.options.input != null) {
+                var result = $(this.options.input).val();
+                if (isNaN(result)) {
+                    return null;
+                }
+                result = +result;
+                return  result < 0 ? Math.ceil(result) : Math.floor(result);
+            }
+            return null;
         },
         _getDefaultYM:function () {
             var year = this.options.defaultYear;
             var month = this.options.defaultMonth;
             if (year == null || month == null) {
+
+                var inputYM = this._getYMFromInput();
                 var defaultYM = new Date();
                 if (year == null) {
-                    year = defaultYM.getFullYear();
+                    year = inputYM != null ? this._ym2year(inputYM) : defaultYM.getFullYear();
                 }
                 if (month == null) {
-                    month = defaultYM.getMonth();
+                    month = inputYM != null ? this._ym2month(inputYM) : defaultYM.getMonth();
                 }
             }
             return Math.floor(year * 100 + month);
         },
         // Use the _setOption method to respond to changes to options
         _setOption:function (key, value) {
-/*
-            switch (key) {
-                case "clear":
-                    // handle changes to clear option
-                    break;
-            }
-*/
+            /*
+             switch (key) {
+             case "clear":
+             // handle changes to clear option
+             break;
+             }
+             */
 
             // In jQuery UI 1.8, you have to manually invoke the _setOption method from the base widget
             $.Widget.prototype._setOption.apply(this, arguments);
@@ -272,14 +292,14 @@
         _ym2month:function (ym) {
             return Math.abs(ym % 100);
         },
-        _selectMonth: function(month) {
+        _selectMonth:function (month) {
             var selector = '.ui-monthpicker-picker-month-cell button';
             var elem = $(this.mainPickerDiv).find(selector);
             elem.removeClass('ui-state-default');
             elem = $(this.mainPickerDiv).find('.ui-monthpicker-picker-month-' + month);
             elem.addClass('ui-state-default');
         },
-        _selectYear: function(year) {
+        _selectYear:function (year) {
             var selector = '.ui-monthpicker-picker-year-cell button';
             var elem = $(this.mainPickerDiv).find(selector);
             for (var i = 0; i < 5; i++) {
@@ -421,55 +441,80 @@
                     }
                 });
         },
-        year: function (newValue) {
-            if (arguments.length > 0) {
-                newValue = Math.ceil(newValue);
-                var lmonth = this._ym2month(this.ym);
-                this.ym = newValue * 100 + lmonth * (newValue < 0 ?  -1 : 1);
-                this.ymButton.empty().append(this._generateMonthYearHeader());
-                if (this.mainPickerDiv.is(':visible')) {
-                    this.baseYear = this._ym2year(this.ym);
+        _update:function (skipYear, skipMonth) {
+            this.ymButton.empty().append(this._generateMonthYearHeader());
+            if (this.mainPickerDiv.is(':visible')) {
+                this.baseYear = this._ym2year(this.ym);
+                if (skipYear == undefined || !skipYear) {
                     this._selectYear(this.baseYear);
+                }
+                if (skipMonth == undefined || !skipMonth) {
+                    this._selectMonth(this._ym2month(this.ym));
+                }
+            }
+        },
+        year:function (newValue) {
+            if (arguments.length > 0) {
+                newValue = newValue < 0 ? Math.ceil(newValue) : Math.floor(newValue);
+                var lmonth = this._ym2month(this.ym);
+                this.ym = newValue * 100 + lmonth * (newValue < 0 ? -1 : 1);
+                this._update(false, true);
+                if (this.options.input != null) {
+                    $(this.options.input).val(this.ym);
                 }
                 this._trigger('change', null, this.ym);
             } else {
                 return this._ym2year(this.ym);
             }
         },
-        month: function (newValue) {
+        month:function (newValue) {
             if (arguments.length > 0) {
-                newValue = Math.ceil(newValue);
+                newValue = newValue < 0 ? Math.ceil(newValue) : Math.floor(newValue);
                 if (newValue < 0 || newValue > 11) {
-                    return;
+                    throw "Invalid value for month selection";
                 }
                 var lyear = this._ym2year(this.ym);
-                this.ym = lyear * 100 + newValue * (lyear < 0 ?  -1 : 1);
-                this.ymButton.empty().append(this._generateMonthYearHeader());
-                if (this.mainPickerDiv.is(':visible')) {
-                    this._selectMonth(this._ym2month(this.ym));
+                this.ym = lyear * 100 + newValue * (lyear < 0 ? -1 : 1);
+                this._update(true, false);
+                if (this.options.input != null) {
+                    $(this.options.input).val(this.ym);
                 }
                 this._trigger('change', null, this.ym);
             } else {
                 return this._ym2month(this.ym);
             }
         },
-        yearMonth: function (newValue) {
+        yearMonth:function (newValue) {
             if (arguments.length > 0) {
-                newValue = Math.ceil(newValue);
+                newValue = newValue < 0 ? Math.ceil(newValue) : Math.floor(newValue);
                 var lmonth = this._ym2month(newValue);
                 if (lmonth < 0 || lmonth > 11) {
-                    return;
+                    throw "Invalid value for month selection";
                 }
                 this.ym = newValue;
-                this.ymButton.empty().append(this._generateMonthYearHeader());
-                if (this.mainPickerDiv.is(':visible')) {
-                    this.baseYear = this._ym2year(this.ym);
-                    this._selectYear(this.baseYear);
-                    this._selectMonth(this._ym2month(this.ym));
+                this._update();
+                if (this.options.input != null) {
+                    $(this.options.input).val(this.ym);
                 }
                 this._trigger('change', null, this.ym);
             } else {
                 return this.ym;
+            }
+        },
+        adjustYearMonth:function (offset) {
+            this._adjustYM(offset);
+        },
+        update:function () {
+            var inputYM = this._getYMFromInput();
+            inputYM = inputYM < 0 ? Math.ceil(inputYM) : Math.floor(inputYM);
+            var lmonth = this._ym2month(inputYM);
+            console.log(lmonth);
+            if (lmonth < 0 || lmonth > 11) {
+                throw "Invalid value for month selection";
+            }
+            if (inputYM != null) {
+                this.ym = inputYM;
+                this._update();
             }
         }
     });
