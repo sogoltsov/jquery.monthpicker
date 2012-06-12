@@ -29,11 +29,11 @@ $(function() {
 _(Coming soon)_
 
 ## Examples
-* [Basic use with minimal configuration](http://sogoltsov.github.com/jquery.monthpicker/mp.master/demos/default.html)
+* [Basic use with minimal configuration](http://sogoltsov.github.com/jquery.monthpicker/mp-master/demos/default.html)
 
-* [Adding jquery-ui theming](http://sogoltsov.github.com/jquery.monthpicker/mp.master/demos/theming.html)
+* [Adding jquery-ui theming](http://sogoltsov.github.com/jquery.monthpicker/mp-master/demos/theming.html)
 
-* [Linkage with input element](http://sogoltsov.github.com/jquery.monthpicker/mp.master/demos/input.html)
+* [Linkage with input element](http://sogoltsov.github.com/jquery.monthpicker/mp-master/demos/input.html)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](https://github.com/cowboy/grunt).
