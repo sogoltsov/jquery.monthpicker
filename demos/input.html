@@ -11,28 +11,41 @@
     <script src="../libs/jquery-ui/js/jquery-ui-1.8.20.custom.min.js"></script>
     <script src="../src/jquery.monthpicker.js"></script>
     <script>
-        $(function() {
+        $(document).ready(function() {
             $("#monthpicker").monthpicker({input: $('.monthPickerLinkedInput')});
         });
     </script>
 </head>
 <body>
 
-<form id="demoForm">
-    <input class="monthPickerLinkedInput" type="text" value="200101"/>
-    <button id="syncButton" onclick="$('#monthpicker').monthpicker('update'); return false;">update monthpicker</button>
-</form>
+<h1>Linkage with <span>input</span> element</h1>
 
 <div class="demo">
+    <form id="demoForm">
+        <input class="monthPickerLinkedInput" type="text" value="200101" readonly="readonly"/>
+        <!--
+            <button id="syncButton" onclick="$('#monthpicker').monthpicker('update'); return false;">update monthpicker</button>
+        -->
+    </form>
 
-</div><!-- End demo -->
-
-Year/Month: <div id="monthpicker"></div>
+    Year/Month: <div id="monthpicker"></div>
+</div>
 
 
 <div class="demo-description">
-    <p>The monthpicker is tied to a standard div element.</p>
-</div><!-- End demo-description -->
+    <p>To associate with an input item, set the monthpicker initialization parameter "input" a reference to that object.</p>
+    <pre>
+&lt;input class="monthPickerLinkedInput" type="text" value="200101" readonly="readonly"/&gt;
+Year/Month: &lt;div id="monthpicker"/&gt;
+
+&lt;script&gt;
+    $(document).ready(function() {
+        $("#monthpicker").monthpicker({input: $('.monthPickerLinkedInput')});
+    });
+&lt;/script&gt;
+    </pre>
+
+</div>
 
 </body>
 </html>

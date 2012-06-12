@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>jQuery Monthpicker - Default functionality</title>
+    <title>jQuery Monthpicker - Theming</title>
 
     <link rel="stylesheet" href="../libs/jquery-ui/css/smoothness/jquery-ui-1.8.20.custom.css">
 <!--
@@ -20,8 +20,6 @@
     <script>
         $(document).ready(function(){
             $('#switcher').themeswitcher();
-        });
-        $(function() {
             $("#monthpicker").monthpicker();
         });
     </script>
@@ -29,21 +27,34 @@
 <body>
 
 <script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"></script>
-<div id="switcher"></div>
+
+<h1>Theming</h1>
+
 
 <div class="demo">
+    <div id="switcher"></div>
 
-<!--
-    <p>Year/Month: <div id="monthpicker"></div></p>
--->
-
-</div><!-- End demo -->
-
-Year/Month: <div id="monthpicker"></div>
+    Year/Month: <div id="monthpicker"></div>
+</div>
 
 
 <div class="demo-description">
     <p>The monthpicker is tied to a standard div element.</p>
+    <pre>
+...
+&lt;script type="text/javascript" src="http://jqueryui.com/themeroller/themeswitchertool/"&gt;&lt;/script&gt;
+...
+
+&lt;div id="switcher"/&gt;
+Year/Month: &lt;div id="monthpicker"/&gt;
+
+&lt;script&gt;
+    $(document).ready(function() {
+        $('#switcher').themeswitcher();
+        $("#monthpicker").monthpicker();
+    });
+&lt;/script&gt;
+    </pre>
 </div><!-- End demo-description -->
 
 </body>

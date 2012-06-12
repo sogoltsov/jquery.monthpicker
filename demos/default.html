@@ -11,7 +11,7 @@
     <script src="../libs/jquery-ui/js/jquery-ui-1.8.20.custom.min.js"></script>
     <script src="../src/jquery.monthpicker.js"></script>
     <script>
-        $(function() {
+        $(document).ready(function() {
             $("#monthpicker").monthpicker();
         });
     </script>
@@ -19,19 +19,23 @@
 <body>
 
 <div class="demo">
+    Year/Month: <div id="monthpicker"></div>
+</div>
 
-<!--
-    <p>Year/Month: <div id="monthpicker"></div></p>
--->
-
-</div><!-- End demo -->
-
-Year/Month: <div id="monthpicker"></div>
 
 
 <div class="demo-description">
     <p>The monthpicker is tied to a standard div element.</p>
-</div><!-- End demo-description -->
+    <pre>
+Year/Month: &lt;div id="monthpicker"/&gt;
+
+&lt;script&gt;
+    $(document).ready(function() {
+        $("#monthpicker").monthpicker();
+    });
+&lt;/script&gt;
+    </pre>
+</div>
 
 </body>
 </html>
