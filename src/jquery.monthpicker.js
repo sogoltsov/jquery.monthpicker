@@ -50,6 +50,7 @@
                     event.stopImmediatePropagation();
                 } else {
                     self._adjustYM(-100);
+                    self._trigger('select', null, self.ym);
                 }
             });
             self.prevMonthButton.bind("click.monthpicker", function (event) {
@@ -58,6 +59,7 @@
                     event.stopImmediatePropagation();
                 } else {
                     self._adjustYM(-1);
+                    self._trigger('select', null, self.ym);
                 }
             });
             self.nextMonthButton.bind("click.monthpicker", function (event) {
@@ -66,6 +68,7 @@
                     event.stopImmediatePropagation();
                 } else {
                     self._adjustYM(1);
+                    self._trigger('select', null, self.ym);
                 }
             });
             self.nextYearButton.bind("click.monthpicker", function (event) {
@@ -74,6 +77,7 @@
                     event.stopImmediatePropagation();
                 } else {
                     self._adjustYM(100);
+                    self._trigger('select', null, self.ym);
                 }
             });
             self.mainPickerDiv = $('<div class="ui-monthpicker-popup ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>').append(this._generateMonthpickerHTML());
@@ -84,6 +88,7 @@
                 self.ymButton.empty().append(self._generateMonthYearHeader());
                 self.mainPickerDiv.hide();
                 self._trigger('change', null, self.ym);
+                self._trigger('select', null, self.ym);
             });
             self.mainPickerDiv.find('.ui-monthpicker-picker-cancel-btn').bind("click.monthpicker", function() {
                 self.mainPickerDiv.hide();
