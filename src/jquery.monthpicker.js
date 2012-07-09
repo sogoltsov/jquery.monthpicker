@@ -51,6 +51,7 @@
                     event.stopImmediatePropagation();
                 } else {
                     self._adjustYM(-100);
+                    self._trigger('select', null, self.ym);
                 }
             });
             self.prevMonthButton.bind("click.monthpicker", function (event) {
@@ -59,6 +60,7 @@
                     event.stopImmediatePropagation();
                 } else {
                     self._adjustYM(-1);
+                    self._trigger('select', null, self.ym);
                 }
             });
             self.nextMonthButton.bind("click.monthpicker", function (event) {
@@ -67,6 +69,7 @@
                     event.stopImmediatePropagation();
                 } else {
                     self._adjustYM(1);
+                    self._trigger('select', null, self.ym);
                 }
             });
             self.nextYearButton.bind("click.monthpicker", function (event) {
@@ -75,6 +78,7 @@
                     event.stopImmediatePropagation();
                 } else {
                     self._adjustYM(100);
+                    self._trigger('select', null, self.ym);
                 }
             });
             self.mainPickerDiv = $('<div class="ui-monthpicker-popup ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>').append(this._generateMonthpickerHTML());
@@ -88,6 +92,7 @@
                     $(self.options.input).val(self.ym);
                 }
                 self._trigger('change', null, self.ym);
+                self._trigger('select', null, self.ym);
             });
             self.mainPickerDiv.find('.ui-monthpicker-picker-cancel-btn').bind("click.monthpicker", function () {
                 self.mainPickerDiv.hide();
@@ -445,10 +450,10 @@
             this.ymButton.empty().append(this._generateMonthYearHeader());
             if (this.mainPickerDiv.is(':visible')) {
                 this.baseYear = this._ym2year(this.ym);
-                if (skipYear == undefined || !skipYear) {
+                if (skipYear == null || !skipYear) {
                     this._selectYear(this.baseYear);
                 }
-                if (skipMonth == undefined || !skipMonth) {
+                if (skipMonth == null || !skipMonth) {
                     this._selectMonth(this._ym2month(this.ym));
                 }
             }
@@ -508,7 +513,6 @@
             var inputYM = this._getYMFromInput();
             inputYM = inputYM < 0 ? Math.ceil(inputYM) : Math.floor(inputYM);
             var lmonth = this._ym2month(inputYM);
-            console.log(lmonth);
             if (lmonth < 0 || lmonth > 11) {
                 throw "Invalid value for month selection";
             }
